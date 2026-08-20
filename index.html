@@ -142,6 +142,26 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
   <p class="note">Everything on this page is computed live from the anchors and increase percentages on the other tabs. Change any yellow input there and this overview follows.</p>
   <div class="metrics" id="dash-metrics"></div>
 
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;margin-bottom:4px">
+    <h3 style="margin:0">Cancellation policy — Base rates &amp; OTAs</h3>
+    <button onclick="exportDashboardToExcel()" style="display:flex;align-items:center;gap:7px;background:var(--aegean);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.03em;box-shadow:0 2px 6px rgba(14,107,116,.25)" onmouseover="this.style.background='#0a555c'" onmouseout="this.style.background='var(--aegean)'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export to Excel
+    </button>
+  </div>
+  <p class="note">Applies to all direct and OTA bookings. TUI and Ion Tours have their own contracted terms.</p>
+  <div class="twrap">
+    <table>
+      <thead><tr><th>Season</th><th>Dates</th><th>Free cancellation deadline</th></tr></thead>
+      <tbody>
+        <tr><td><span class="season-pill p-LOW">LOW</span></td><td>01/01–28/02 &amp; 01/11–28/12</td><td>24 hours before arrival</td></tr>
+        <tr><td><span class="season-pill p-MIDDLE">MIDDLE</span></td><td>01/03–30/04 &amp; 01/08–31/08</td><td>2 days before arrival</td></tr>
+        <tr><td><span class="season-pill p-HIGH">HIGH</span></td><td>01/07–31/07 &amp; 01/10–31/10</td><td>5 days before arrival</td></tr>
+        <tr><td><span class="season-pill p-PEAK">PEAK</span></td><td>01/05–30/06 &amp; 01/09 &amp; 29–31/12</td><td>7 days before arrival</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <h3>Base flexible rate 2027 — gross, double occupancy</h3>
   <div class="twrap" id="dash-base"></div>
 
@@ -206,6 +226,20 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
   </div>
 
   <div id="base-tables"></div>
+
+  <h3 style="margin-top:24px">Cancellation policy — Base rates &amp; OTAs</h3>
+  <p class="note">Applies to all direct and OTA bookings. TUI and Ion Tours operate under their own contracted cancellation terms.</p>
+  <div class="twrap">
+    <table>
+      <thead><tr><th>Season</th><th>Dates</th><th>Free cancellation deadline</th></tr></thead>
+      <tbody>
+        <tr><td><span class="season-pill p-LOW">LOW</span></td><td>01/01–28/02 &amp; 01/11–28/12</td><td>24 hours before arrival</td></tr>
+        <tr><td><span class="season-pill p-MIDDLE">MIDDLE</span></td><td>01/03–30/04 &amp; 01/08–31/08</td><td>2 days before arrival</td></tr>
+        <tr><td><span class="season-pill p-HIGH">HIGH</span></td><td>01/07–31/07 &amp; 01/10–31/10</td><td>5 days before arrival</td></tr>
+        <tr><td><span class="season-pill p-PEAK">PEAK</span></td><td>01/05–30/06 &amp; 01/09 &amp; 29–31/12</td><td>7 days before arrival</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- ================= YIELDING ================= -->
@@ -488,7 +522,7 @@ function baseGrid(m,plan,chan,occ,section){
     }
     if(occ!=='dbl'){
       rows+=`<tr class="single"><td>${r.n} · single occupancy</td><td class="num">${r.inv}</td>`+
-        SEASONS.map(s=>`<td class="num">${fmt(sect(m,gRate(m,gSgl(m,r.k,s.k),plan,chan),section))}</td>`).join('')+`</tr>`;
+        SEASONS.map(s=>`<td class="num">${fmt(sect(m,gRate(m,gDbl(m,r.k,s.k),plan,chan)-m.sing,section))}</td>`).join('')+`</tr>`;
     }
   });
   return tbl(head+rows);
@@ -532,7 +566,7 @@ function renderYield(){
     out+=`<h3>${stages===0?'Stage 0 — base rate as loaded':'Stage '+stages+' rates — base + '+inc[stages-1]+'%'}</h3>`;
     out+=tbl(`<tr><th>Room type</th>${seasonTH()}</tr>`+ROOMS.map(r=>
       `<tr><td class="roomcell">${r.n}</td>`+SEASONS.map(s=>`<td class="num">${eur(R(gDbl(m,r.k,s.k)*(1+f)))}</td>`).join('')+
-      `</tr><tr class="single"><td>${r.n} · single occupancy</td>`+SEASONS.map(s=>`<td class="num">${eur(R(gSgl(m,r.k,s.k)*(1+f)))}</td>`).join('')+`</tr>`).join(''));
+      `</tr><tr class="single"><td>${r.n} · single occupancy</td>`+SEASONS.map(s=>`<td class="num">${eur(R(gDbl(m,r.k,s.k)*(1+f))-m.sing)}</td>`).join('')+`</tr>`).join(''));
   }
   $('yield-tables').innerHTML=out;
   drawYieldChart(trig);
@@ -749,8 +783,12 @@ function renderDash(){
     <div class="metric"><div class="l">2026 season revenue</div><div class="v">860,122 €</div><div class="d">ADR 69.87 € · 12,310 nights</div></div>`;
 
   $('dash-base').innerHTML=`<table><tr><th>Room type</th><th>Inv</th>${seasonTH()}</tr>`+
-    ROOMS.map(r=>`<tr><td class="roomcell">${r.n}</td><td class="num">${r.inv}</td>`+
-      SEASONS.map(s=>`<td class="num">${eur(gDbl(m,r.k,s.k))}</td>`).join('')+`</tr>`).join('')+`</table>`;
+    ROOMS.map(r=>
+      `<tr><td class="roomcell">${r.n}</td><td class="num">${r.inv}</td>`+
+      SEASONS.map(s=>`<td class="num">${eur(gDbl(m,r.k,s.k))}</td>`).join('')+`</tr>`+
+      `<tr class="single"><td>${r.n} · single occ.</td><td class="num">${r.inv}</td>`+
+      SEASONS.map(s=>`<td class="num">${eur(gDbl(m,r.k,s.k)-m.sing)}</td>`).join('')+`</tr>`
+    ).join('')+`</table>`;
 
   const r27=tui27();
   $('dash-tui').innerHTML=`<table><tr><th>TUI — net, double occ.</th>${seasonTH()}</tr>`+
@@ -855,6 +893,53 @@ function renderAll(){
 }
 document.querySelectorAll('input[type=number]').forEach(i=>i.addEventListener('input',renderAll));
 showTab('dash');
+
+function exportDashboardToExcel(){
+  const ts=new Date();
+  const dateStr=ts.toLocaleDateString('el-GR')+' '+ts.toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});
+
+  /* Build a minimal Excel-compatible HTML workbook */
+  const CSS=`table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-size:12px}
+    th{background:#0e6b74;color:#fff;font-weight:600}
+    tr:nth-child(even) td{background:#f4f9f9}
+    h2{font-size:14px;margin:12px 0 2px}h3{font-size:12px;margin:10px 0 2px;color:#0e6b74}p{font-size:11px;color:#666;margin:0 0 6px}`;
+
+  let body=`<h2>Ermass Athens — 2027 Rates Dashboard</h2><p>Exported: ${dateStr}</p>`;
+
+  /* Cancellation policy */
+  const cxlTbl=document.querySelector('#p-dash .twrap table');
+  if(cxlTbl){
+    body+=`<h3>CANCELLATION POLICY — BASE RATES &amp; OTAs</h3>`;
+    body+=cxlTbl.outerHTML;
+  }
+
+  /* Rate sections */
+  [
+    {id:'dash-base',  title:'BASE FLEXIBLE RATE 2027 — GROSS (double &amp; single)'},
+    {id:'dash-tui',   title:'TUI CONTRACT — NET, DOUBLE OCC.'},
+    {id:'dash-ionfit',title:'ION TOURS — FIT, NET'},
+    {id:'dash-iongrp',title:'ION TOURS — GROUPS, NET'},
+    {id:'dash-trip',  title:'TRIP.COM B2V — NET'},
+  ].forEach(sec=>{
+    const el=document.getElementById(sec.id);
+    if(!el||!el.querySelector('table'))return;
+    body+=`<h3>${sec.title}</h3>`;
+    /* Strip season-pill spans — keep plain text for Excel */
+    const clone=el.cloneNode(true);
+    clone.querySelectorAll('.season-pill').forEach(sp=>{sp.replaceWith(sp.textContent);});
+    body+=clone.innerHTML;
+  });
+
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>${CSS}</style></head><body>${body}</body></html>`;
+
+  const blob=new Blob(['﻿'+html],{type:'application/vnd.ms-excel;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='Ermass_Dashboard_2027.xls';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 </script>
 </body>
 </html>
