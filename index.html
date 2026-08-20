@@ -377,8 +377,8 @@ const ROOMS=[
 ];
 const SEASONS=[
  {k:'LOW', dates:'01/01–28/02 & 01/11–28/12'},
- {k:'MIDDLE', dates:'01/03–30/04'},
- {k:'HIGH', dates:'01/07–31/08 & 01/10–31/10'},
+ {k:'MIDDLE', dates:'01/03–30/04 & 01/08–31/08'},
+ {k:'HIGH', dates:'01/07–31/07 & 01/10–31/10'},
  {k:'PEAK', dates:'01/05–30/06 & 01/09 & 29–31/12'}
 ];
 
@@ -556,7 +556,7 @@ function renderTUI(){
     out=`<h3>2026 contracted rates — restated on the 2027 season bands, double occupancy</h3>`+
       tbl(`<tr><th>Room type</th>${seasonTH()}</tr>`+TUI26.rows.map((n,i)=>
         `<tr><td class="roomcell">${n}</td>`+TUI26.base[i].map(v=>`<td class="num">${eur2(v)}</td>`).join('')+`</tr>`).join(''))+
-      `<p class="note" style="margin-top:10px">LOW from the Nov–Dec 2026 rate · MIDDLE from April only (August now sits in HIGH) · HIGH is July, August and October night-weighted · PEAK from 16 May–June and September.</p>`;
+      `<p class="note" style="margin-top:10px">LOW from the Nov–Dec 2026 rate · MIDDLE from April and August · HIGH is July and October night-weighted · PEAK from 16 May–June and September.</p>`;
   } else if(view==='extra'){
     out=`<h3>Additional person — per person per night, applies to 3rd and 4th person</h3>`+
       tbl(`<tr><th></th>${seasonTH()}</tr>
