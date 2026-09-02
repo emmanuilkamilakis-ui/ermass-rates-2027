@@ -784,40 +784,36 @@ function invRate(room, season){
   return Math.round(INV_RATES[season][room] * (1 + pct));
 }
 function renderInv(){
-  const tbl = V('sel-inv','rates');
-  let html = '';
-  if(tbl === 'rates'){
+  const view = $('sel-inv').value;
+  let out = '';
+  if(view === 'rates'){
     const ths = INV_SEASONS.map(s=>`<th><span class="season-pill ${s.cls}">${s.label}</span><span class="dates">${s.dates}</span></th>`).join('');
-    html = `<div class="twrap"><table>
-      <tr><th>Room type</th>${ths}</tr>` +
+    out = tbl(`<tr><th>Room type</th>${ths}</tr>` +
       INV_ROOMS.map(r=>`<tr><td class="roomcell">${r.n}</td>` +
         INV_SEASONS.map(s=>`<td class="num">${eur(invRate(r.k,s.k))}</td>`).join('') +
-      `</tr>`).join('') +
-      `</table></div>
-      <p class="note" style="margin-top:12px">Rates adjust in real time with the % inputs above. Agreed base rates: Apt €53/70/79 · Sup Studio €51/67/76 · Deluxe €48/64/73 · Standard €46/61/69 (Low/Mid/High). Set all % to 0 to see the contracted figures.</p>`;
-  } else if(tbl === 'extra'){
-    html = `<div class="twrap"><table>
-      <tr><th>Additional guest sharing the same room</th><th>Charge per night</th></tr>
-      <tr><td class="roomcell">Children 0 – 2 years</td><td class="num">Free of charge</td></tr>
-      <tr><td class="roomcell">Children 3 – 11 years</td><td class="num">€ 5</td></tr>
-      <tr><td class="roomcell">Age 12 and over</td><td class="num">€ 10</td></tr>
-      </table></div>`;
-  } else if(tbl === 'terms'){
-    const terms = [
+      `</tr>`).join('')) +
+      `<p class="note" style="margin-top:12px">Agreed base rates (gross, incl. VAT): Apt €53/70/79 &middot; Sup Studio €51/67/76 &middot; Deluxe €48/64/73 &middot; Standard €46/61/69 (Low/Mid/High). Set all adjustment % to 0 to see the contracted figures.</p>`;
+  } else if(view === 'extra'){
+    out = tbl(`<tr><th>Additional guest sharing the same room</th><th>Charge per night</th></tr>
+      <tr><td class="roomcell">Children 0 &ndash; 2 years</td><td class="num">Free of charge</td></tr>
+      <tr><td class="roomcell">Children 3 &ndash; 11 years</td><td class="num">&euro; 5</td></tr>
+      <tr><td class="roomcell">Age 12 and over</td><td class="num">&euro; 10</td></tr>`);
+  } else if(view === 'terms'){
+    const termsData = [
       ['1. Eligibility &amp; use',
        ['Available exclusively to shareholders of ERMASS S.A. and their first-degree family members (spouse, parents, children).',
         'Maximum <strong>15 room-nights per investor per calendar year</strong>. Unused nights cannot be carried forward.',
         'Rates are personal and non-transferable. May not be resold, assigned to third parties, or used for commercial, group or event bookings.']],
       ['2. How to book',
-       ['<strong>Direct bookings only</strong> — telephone <strong>+30 210 524 0673</strong> or e-mail <strong>info@ermass.gr</strong>. Not loaded on Booking.com, Expedia, Airbnb or any other online channel.',
+       ['<strong>Direct bookings only</strong> &mdash; telephone <strong>+30 210 524 0673</strong> or e-mail <strong>info@ermass.gr</strong>. Not loaded on Booking.com, Expedia, Airbnb or any other online channel.',
         'Quote <em>"Investor Rate"</em> together with your name when requesting a reservation.',
         'Subject to availability. May be closed on high-demand dates, Greek public holidays and major city-wide events.',
         'Cannot be combined with any other rate, offer or promotion (early booking, non-refundable, long-stay discounts, loyalty benefits, etc.).',
         '<strong>Early booking strongly recommended for June, September and October.</strong>']],
       ['3. Inclusions &amp; additional charges',
        ['Included: accommodation, complimentary Wi-Fi, full access to the wellness area (sauna &amp; pool), gym and rooftop terrace.',
-        'Breakfast at ERMASS Café is <strong>not included</strong> — can be purchased separately.',
-        'Climate Crisis Resilience Fee is <strong>not included</strong> — collected at check-in as required by Greek law.']],
+        'Breakfast at ERMASS Caf&eacute; is <strong>not included</strong> &mdash; can be purchased separately.',
+        'Climate Crisis Resilience Fee is <strong>not included</strong> &mdash; collected at check-in as required by Greek law.']],
       ['4. Payment, cancellation &amp; no-show',
        ['A valid credit card is required to guarantee the reservation. Payment settled on arrival.',
         'Free cancellation up to <strong>48 hours</strong> before scheduled arrival.',
@@ -827,12 +823,12 @@ function renderInv(){
        ['These rates are valid for stays between <strong>1 September 2026 and 31 December 2027</strong>.',
         'ERMASS S.A. reserves the right to amend or withdraw the programme with prior written notice to shareholders.']]
     ];
-    html = terms.map(([heading, bullets])=>
+    out = termsData.map(([heading, bullets])=>
       `<div class="card"><h3 style="margin-top:0">${heading}</h3><ul style="padding-left:18px;line-height:2">`+
       bullets.map(b=>`<li style="font-size:13.5px">${b}</li>`).join('')+`</ul></div>`
     ).join('');
   }
-  $('inv-tables').innerHTML = html;
+  $('inv-tables').innerHTML = out;
 }
 
 function renderDash(){
