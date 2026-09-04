@@ -764,9 +764,9 @@ function renderAn(){
 
 /* ============ INVESTORS ============ */
 const INV_RATES = {
-  LOW:  {apt:53, supstudio:51, dlx:48, std:46},
-  MID:  {apt:70, supstudio:67, dlx:64, std:61},
-  HIGH: {apt:79, supstudio:76, dlx:73, std:69}
+  LOW:  {apt:55, supstudio:50, dlx:45, std:40},
+  MID:  {apt:65, supstudio:60, dlx:55, std:50},
+  HIGH: {apt:65, supstudio:60, dlx:55, std:50}
 };
 const INV_ROOMS = [
   {k:'apt',      n:'Superior Apartment with City View'},
@@ -792,7 +792,7 @@ function renderInv(){
       INV_ROOMS.map(r=>`<tr><td class="roomcell">${r.n}</td>` +
         INV_SEASONS.map(s=>`<td class="num">${eur(invRate(r.k,s.k))}</td>`).join('') +
       `</tr>`).join('')) +
-      `<p class="note" style="margin-top:12px">Agreed base rates (gross, incl. VAT): Apt €53/70/79 &middot; Sup Studio €51/67/76 &middot; Deluxe €48/64/73 &middot; Standard €46/61/69 (Low/Mid/High). Set all adjustment % to 0 to see the contracted figures.</p>`;
+      `<p class="note" style="margin-top:12px">Agreed base rates (gross, incl. VAT): Apt €55/65/65 &middot; Sup Studio €50/60/60 &middot; Deluxe €45/55/55 &middot; Standard €40/50/50 (Low/Mid/High). Set all adjustment % to 0 to see the contracted figures.</p>`;
   } else if(view === 'extra'){
     out = tbl(`<tr><th>Additional guest sharing the same room</th><th>Charge per night</th></tr>
       <tr><td class="roomcell">Children 0 &ndash; 2 years</td><td class="num">Free of charge</td></tr>
@@ -812,6 +812,7 @@ function renderInv(){
         '<strong>Early booking strongly recommended for June, September and October.</strong>']],
       ['3. Inclusions &amp; additional charges',
        ['Included: accommodation, complimentary Wi-Fi, full access to the wellness area (sauna &amp; pool), gym and rooftop terrace.',
+        'Upon availability, exclusively for investors or ERMASS: complimentary upgrade to the next room category, early check-in and late check-out.',
         'Breakfast at ERMASS Caf&eacute; is <strong>not included</strong> &mdash; can be purchased separately.',
         'Climate Crisis Resilience Fee is <strong>not included</strong> &mdash; collected at check-in as required by Greek law.']],
       ['4. Payment, cancellation &amp; no-show',
