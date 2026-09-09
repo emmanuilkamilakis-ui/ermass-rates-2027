@@ -113,7 +113,7 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
       <div class="sub">80 rooms · Chalkokondili 31, Athens · Urbanistas Hotels &amp; Resorts</div>
     </div>
     <div class="meta">
-      <b>Live model — draft v5 basis</b><br>
+      <b>Live model — final 2027 agreed rates</b><br>
       All figures gross unless stated · Single = double − <span id="m-singred">3</span> € · Rounded to the nearest €
     </div>
   </div>
@@ -238,12 +238,12 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
 <!-- ================= TUI ================= -->
 <div class="panel" id="p-tui">
   <h2>TUI — suggested contract rates 2027</h2>
-  <p class="note">Covers TUI Benelux (BE / NL / LU) and TUI DE (DE / AT / PL / CH + ltur + flyloco). Net, room only, double occupancy. 2027 = the 2026 contracted rate × (1 + increase %). The parity block compares against your cheapest rate visible online (early booking × website direct).</p>
+  <p class="note">Covers TUI Benelux (BE / NL / LU) and TUI DE (DE / AT / PL / CH + ltur + flyloco). Net, room only, double occupancy. 2027 = final agreed rates per v6 proposal (Aug 2026). The parity block compares against your cheapest rate visible online (early booking × website direct).</p>
   <div class="controls">
-    <div class="ctl"><label>Increase % — LOW</label><input type="number" id="tui-l" value="0" step="0.5"></div>
-    <div class="ctl"><label>Increase % — MIDDLE</label><input type="number" id="tui-m" value="8" step="0.5"></div>
-    <div class="ctl"><label>Increase % — HIGH</label><input type="number" id="tui-h" value="10" step="0.5"></div>
-    <div class="ctl"><label>Increase % — PEAK</label><input type="number" id="tui-p" value="13" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — LOW</label><input type="number" id="tui-l" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — MIDDLE</label><input type="number" id="tui-m" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — HIGH</label><input type="number" id="tui-h" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — PEAK</label><input type="number" id="tui-p" value="0" step="0.5"></div>
     <div class="ctl"><label>Table</label>
       <select id="sel-tui" onchange="renderAll()">
         <option value="rates">2027 rates — per room</option>
@@ -261,11 +261,11 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
 <!-- ================= ION FIT ================= -->
 <div class="panel" id="p-ionfit">
   <h2>Ion Tours — FIT / individual rates 2027</h2>
-  <p class="note">Allotment through Ion's direct agent network. Net, room only, incl. VAT and city tax. Superior Studio City View and Standard Studio only. Ion runs three seasons of its own, cutting across your hotel bands.</p>
+  <p class="note">Allotment through Ion's direct agent network. Net, room only, incl. VAT and city tax. Superior Studio City View and Standard Studio only. 2027 final agreed rates: Nov–Apr / May–Aug / Sep–Oct.</p>
   <div class="controls">
-    <div class="ctl"><label>Increase % — Nov–Apr</label><input type="number" id="ionf-1" value="3" step="0.5"></div>
-    <div class="ctl"><label>Increase % — May–Aug</label><input type="number" id="ionf-2" value="5" step="0.5"></div>
-    <div class="ctl"><label>Increase % — Sep–Oct</label><input type="number" id="ionf-3" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Nov–Apr</label><input type="number" id="ionf-1" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — May–Aug</label><input type="number" id="ionf-2" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Sep–Oct</label><input type="number" id="ionf-3" value="0" step="0.5"></div>
     <div class="ctl"><label>Table</label>
       <select id="sel-ionf" onchange="renderAll()">
         <option value="rates">2027 suggested rates</option>
@@ -280,17 +280,18 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
 <!-- ================= ION GROUPS ================= -->
 <div class="panel" id="p-iongrp">
   <h2>Ion Tours — group rates 2027</h2>
-  <p class="note">Run of house, 10 rooms or more — Greek school trips and Balkan adult tours, volume concentrated March to mid-May. Watch the cancel rate: Ion Groups washed 53.5% of bookings in 2026, the highest of any partner.</p>
+  <p class="note">Run of house, 10 rooms or more — Greek school trips and Balkan adult tours. 5 rate periods: Jan–Mar/Nov–Dec · Apr · May · Jul/Aug/Oct (+7%) · Jun/Sep (+10%). Volume discount 7% after 1,400 nights. Watch the cancel rate: Ion Groups washed 53.5% in 2026.</p>
   <div class="controls">
-    <div class="ctl"><label>Increase % — Jan–Mar / Nov–Dec</label><input type="number" id="iong-1" value="2" step="0.5"></div>
-    <div class="ctl"><label>Increase % — April</label><input type="number" id="iong-2" value="4" step="0.5"></div>
-    <div class="ctl"><label>Increase % — May</label><input type="number" id="iong-3" value="6" step="0.5"></div>
-    <div class="ctl"><label>Increase % — June</label><input type="number" id="iong-4" value="6" step="0.5"></div>
-    <div class="ctl"><label>Volume discount %</label><input type="number" id="iong-vol" value="5" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Ιαν–Μαρ / Νοε–Δεκ</label><input type="number" id="iong-1" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Απρίλιος</label><input type="number" id="iong-2" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Μάιος</label><input type="number" id="iong-3" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Ιούλ / Αύγ / Οκτ</label><input type="number" id="iong-4" value="0" step="0.5"></div>
+    <div class="ctl"><label>Adjust % — Ιούν / Σεπ</label><input type="number" id="iong-5" value="0" step="0.5"></div>
+    <div class="ctl"><label>Volume discount %</label><input type="number" id="iong-vol" value="7" step="0.5"></div>
     <div class="ctl"><label>Table</label>
       <select id="sel-iong" onchange="renderAll()">
         <option value="rates">2027 suggested rates</option>
-        <option value="vol">After volume discount (1,200+ nights)</option>
+        <option value="vol">After volume discount (1,400+ nights)</option>
         <option value="2026">2026 contracted rates</option>
         <option value="foc">Complimentary rooms</option>
         <option value="parity">Parity check &amp; headroom</option>
@@ -437,15 +438,16 @@ function sect(m,g,section){
 function floorRate(m,room,season){ return gRate(m,gDbl(m,room,season),'eb','web'); }
 
 /* ============ contract data ============ */
-const TUI26={rows:['Classic Studio → Standard Studio','Deluxe Studio → Deluxe Studio','Superior Studio → Superior Studio City View','Superior Apartment → Superior Apt City View'],
+const TUI26={rows:['Classic Studio (ST-01) · 25 m²','Deluxe Studio (ST-02) · 30 m²','Superior Apartment City View (ST-03) · 29 m²','Premium Apartment City View (ST-04) · 35 m²'],
   floorRoom:['std','dlx','sup','apt'],
-  base:[[45,45,53.44,60.84],[47,47,56.44,63.80],[49,49,58.94,66.62],[53,53,63.94,72.40]]};
+  base:[[45,49,59,69],[47,51,62,72],[49,53,65,75],[53,57,70,82]]};
 const IONF26={rows:['Superior Studio – City View','Standard Studio'], floorRoom:['sup','std'],
-  seas:['01/01–30/04 & 01/11–31/12','01/05–31/08','01/09–31/10'],
-  floorSeason:['LOW','HIGH','HIGH'], base:[[58,75,85],[53,68,75]]};
+  seas:['01/11/26–30/04/27','01/05–31/08','01/09–31/10'],
+  floorSeason:['LOW','HIGH','HIGH'], base:[[60,79,85],[55,71,75]]};
 const IONG26={rows:['Single occupancy','Double occupancy','Triple occupancy','Quadruple occupancy'],
-  seas:['01/01–31/03 & 01/11–31/12','01/04–30/04','01/05–31/05','01/06–30/06'],
-  floorSeason:['LOW','MIDDLE','PEAK','PEAK'], base:[[45,50,65,70],[50,55,70,75],[60,65,80,85],[70,75,90,95]]};
+  seas:['Ιαν–Μαρ / Νοε–Δεκ','Απρίλιος','Μάιος','Ιούλ / Αύγ / Οκτ','Ιούν / Σεπ'],
+  floorSeason:['LOW','MIDDLE','PEAK','PEAK','PEAK'],
+  base:[[46,52,69,74,81],[51,57,74,79,88],[61,67,85,91,99],[71,78,95,102,111]]};
 const TRIPROOMS=['Superior Apartment with City View','Superior Studio with City View','Deluxe Studio','Standard Studio'];
 const TRIPKEYS=['apt','sup','dlx','std'];
 
@@ -579,7 +581,7 @@ function renderTUI(){
     out=`<h3>2026 contracted rates — restated on the 2027 season bands, double occupancy</h3>`+
       tbl(`<tr><th>Room type</th>${seasonTH()}</tr>`+TUI26.rows.map((n,i)=>
         `<tr><td class="roomcell">${n}</td>`+TUI26.base[i].map(v=>`<td class="num">${eur2(v)}</td>`).join('')+`</tr>`).join(''))+
-      `<p class="note" style="margin-top:10px">LOW from the Nov–Dec 2026 rate · MIDDLE from April and August · HIGH is July and October night-weighted · PEAK from 16 May–June and September.</p>`;
+      `<p class="note" style="margin-top:10px">2027 final proposal rates per v6 (Aug 2026). LOW = Nov–Dec · MIDDLE = Apr &amp; Aug · HIGH = Jul &amp; Oct · PEAK = May–Jun &amp; Sep.</p>`;
   } else if(view==='extra'){
     out=`<h3>Additional person — per person per night, applies to 3rd and 4th person</h3>`+
       tbl(`<tr><th></th>${seasonTH()}</tr>
@@ -672,7 +674,7 @@ function renderIonF(){
 }
 
 /* ============ ION GROUPS ============ */
-function iong27(){ const inc=[V('iong-1'),V('iong-2'),V('iong-3'),V('iong-4')];
+function iong27(){ const inc=[V('iong-1'),V('iong-2'),V('iong-3'),V('iong-4'),V('iong-5')];
   return IONG26.base.map(row=>row.map((v,j)=>R(v*(1+inc[j]/100)))); }
 function iongTH(){ return IONG26.seas.map(s=>`<th>${s}</th>`).join(''); }
 function renderIonG(){
@@ -683,7 +685,7 @@ function renderIonG(){
       tbl(`<tr><th>Occupancy</th>${iongTH()}</tr>`+IONG26.rows.map((n,i)=>
         `<tr><td class="roomcell">${n}</td>`+r27[i].map(v=>`<td class="num">${eur(v)}</td>`).join('')+`</tr>`).join(''));
   } else if(view==='vol'){
-    out=`<h3>After the volume discount — every booking beyond 1,200 cumulative room nights takes −${V('iong-vol')}%</h3>`+
+    out=`<h3>After the volume discount — every booking beyond 1,400 cumulative room nights takes −${V('iong-vol')}%</h3>`+
       tbl(`<tr><th>Occupancy</th>${iongTH()}</tr>`+IONG26.rows.map((n,i)=>
         `<tr><td class="roomcell">${n}</td>`+r27[i].map(v=>`<td class="num">${eur(R(v*(1-vol)))}</td>`).join('')+`</tr>`).join(''));
   } else if(view==='2026'){
@@ -691,11 +693,16 @@ function renderIonG(){
       tbl(`<tr><th>Occupancy</th>${iongTH()}</tr>`+IONG26.rows.map((n,i)=>
         `<tr><td class="roomcell">${n}</td>`+IONG26.base[i].map(v=>`<td class="num">${eur(v)}</td>`).join('')+`</tr>`).join(''));
   } else if(view==='foc'){
-    out=`<h3>Complimentary rooms per group booking</h3>`+
+    out=`<h3>Complimentary rooms — Tourist groups</h3>`+
       tbl(`<tr><th>Group size</th><th style="text-align:left">Complimentary rooms</th></tr>
         <tr><td class="roomcell">20 – 40 guests</td><td style="text-align:left">1 × single room free of charge</td></tr>
         <tr><td class="roomcell">41 – 60 guests</td><td style="text-align:left">1 × double room free of charge</td></tr>
-        <tr><td class="roomcell">61 – 80 guests</td><td style="text-align:left">1 × double + 1 × single room free of charge</td></tr>`);
+        <tr><td class="roomcell">61 – 80 guests</td><td style="text-align:left">1 × double + 1 × single room free of charge</td></tr>`)+
+      `<h3 style="margin-top:20px">Complimentary rooms — School groups</h3>`+
+      tbl(`<tr><th>Group size</th><th style="text-align:left">Complimentary rooms</th></tr>
+        <tr><td class="roomcell">20 – 40 guests</td><td style="text-align:left">1 × single room free of charge</td></tr>
+        <tr><td class="roomcell">41 – 60 guests</td><td style="text-align:left">2 × single rooms free of charge</td></tr>
+        <tr><td class="roomcell">61+ guests</td><td style="text-align:left">3 × single rooms free of charge</td></tr>`);
   } else if(view==='parity'){
     const extras=[0,0,15,30];
     let rows='';
