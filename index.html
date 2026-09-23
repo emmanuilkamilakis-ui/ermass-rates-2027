@@ -75,6 +75,7 @@ td.pos{color:var(--mid)} td.neg{color:var(--peak);font-weight:600}
 .chartbox{position:relative;height:300px;margin-top:14px}
 .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line2);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;flex-wrap:gap:10px}
 @media (max-width:700px){.hd .meta{text-align:left}}
+tr.cxl td{background:rgba(200,160,60,.12)}
 </style>
 </head>
 <body>
@@ -505,7 +506,9 @@ function tbl(html){ return `<div class="twrap"><table>${html}</table></div>`; }
 function baseGrid(m,plan,chan,occ,section){
   const fmt=section==='gross'?eur:eur2;
   let head=`<tr><th>Room type</th><th>Inv</th>${seasonTH()}</tr>`;
-  let rows='';
+  const CXL={flex:{LOW:'24 hours',MIDDLE:'2 days',HIGH:'5 days',PEAK:'7 days'}}[plan];
+  let rows=`<tr class="cxl"><td class="roomcell"><b>Cancellation policy</b><br><span style="font-weight:400;font-size:.85em">free cancellation up to … before arrival</span></td><td></td>`+
+    SEASONS.map(s=>`<td class="num"><b>${CXL?CXL[s.k]:'NFR'}</b></td>`).join('')+`</tr>`;
   ROOMS.forEach(r=>{
     if(occ!=='sgl'){
       rows+=`<tr><td class="roomcell">${r.n}</td><td class="num">${r.inv}</td>`+
@@ -523,7 +526,7 @@ function renderBase(){
   const m=model();
   const plan=$('sel-plan').value, section=$('sel-section').value, occ=$('sel-occ').value, chan=$('sel-chan').value;
   const chans=chan==='all'?[['base','Base flexible rate'],['ota','OTA visible rate — −'+V('in-ota')+'%'],['web','Website direct rate — −'+V('in-web')+'%']]:[[chan,{base:'Base flexible rate',ota:'OTA visible rate',web:'Website direct rate'}[chan]]];
-  const planN={flex:'Base flexible — fully flexible',nfr:'Non-refundable — −'+V('in-nfr')+'% of base flexible',eb:'Early booking — −'+V('in-eb')+'%, booked 2+ weeks before arrival'}[plan];
+  const planN={flex:'Base flexible — free cancellation 24h (Low) / 2 days (Middle) / 5 days (High) / 7 days (Peak)',nfr:'Non-refundable — −'+V('in-nfr')+'% of base flexible · NFR',eb:'Early booking — −'+V('in-eb')+'%, booked 2+ weeks before arrival · NFR'}[plan];
   const secN={gross:'gross, incl. all taxes, rounded to the nearest €',net:'net without tax — gross ÷ '+m.tax,netc:'net without tax & commission ('+V('in-comm')+'%)'}[section];
   let out=`<h3>${planN} · ${secN}</h3>`;
   chans.forEach(c=>{ out+=`<p class="note" style="margin:14px 0 0"><b>${c[1]}</b></p>`+baseGrid(m,plan,c[0],occ,section); });
