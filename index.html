@@ -76,6 +76,8 @@ td.pos{color:var(--mid)} td.neg{color:var(--peak);font-weight:600}
 .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line2);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;flex-wrap:gap:10px}
 @media (max-width:700px){.hd .meta{text-align:left}}
 tr.cxl td{background:rgba(200,160,60,.12)}
+#cxl-tables td,#cxl-tables th{white-space:normal!important;text-align:left!important;vertical-align:top}
+#cxl-tables table{table-layout:auto;width:100%}
 </style>
 </head>
 <body>
@@ -123,6 +125,7 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
     <select id="tabsel" class="big" onchange="showTab(this.value)">
       <option value="dash">Dashboard — overview</option>
       <option value="base">Base rates 2027</option>
+      <option value="cxl">Cancellation policy 2027</option>
       <option value="yield">Yielding — automated stages</option>
       <option value="tui">TUI contract</option>
       <option value="ionfit">Ion Tours — FIT</option>
@@ -208,6 +211,23 @@ document.getElementById('pwinput').addEventListener('keydown', function(e){
   </div>
 
   <div id="base-tables"></div>
+</div>
+
+<!-- ================= CANCELLATION POLICY ================= -->
+<div class="panel" id="p-cxl">
+  <h2>Cancellation policy 2027</h2>
+  <p class="note">Free-cancellation windows per rate plan and season, as set on the BASE RATES 2027 tab of the workbook. The same windows apply to the Base flexible, OTA visible and Website direct channels.</p>
+  <div class="controls" style="background:var(--card)">
+    <div class="ctl"><label>Cancellation policy</label>
+      <select id="sel-cxl" onchange="renderAll()">
+        <option value="all">Base rates — all rate plans</option>
+        <option value="flex">Base flexible rate</option>
+        <option value="nfr">Non-refundable rate</option>
+        <option value="eb">Early booking offer</option>
+        <option value="partners">Contracts &amp; partners</option>
+      </select></div>
+  </div>
+  <div id="cxl-tables"></div>
 </div>
 
 <!-- ================= YIELDING ================= -->
@@ -957,6 +977,33 @@ function exportCSV(){
 }
 
 /* ============ orchestration ============ */
+function renderCxl(){
+  const sel=$('sel-cxl').value;
+  const W={LOW:'24 hours',MIDDLE:'2 days',HIGH:'5 days',PEAK:'7 days'};
+  const plans=[
+    ['flex','Base flexible rate',s=>'Free cancellation up to <b>'+W[s]+'</b> before arrival'],
+    ['nfr','Non-refundable rate (−'+V('in-nfr')+'%)',s=>'<b>NFR</b> — non-refundable'],
+    ['eb','Early booking offer (−'+V('in-eb')+'%, booked 2+ weeks ahead)',s=>'<b>NFR</b> — non-refundable']
+  ];
+  let out='';
+  if(sel!=='partners'){
+    const list=sel==='all'?plans:plans.filter(p=>p[0]===sel);
+    out+=`<h3>Base rates 2027 — cancellation policy</h3>`+tbl(
+      `<tr><th>Rate plan</th>${seasonTH()}</tr>`+
+      list.map(p=>`<tr><td class="roomcell">${p[1]}</td>`+SEASONS.map(s=>`<td>${p[2](s.k)}</td>`).join('')+`</tr>`).join(''));
+    out+=`<p class="note" style="margin-top:12px">Applies to all room types, double and single occupancy, and to all three channels (Base flexible, OTA visible, Website direct).</p>`;
+  } else {
+    out+=`<h3>Contracts &amp; partners — cancellation terms 2027</h3>`+tbl(
+      `<tr><th>Source</th><th>Cancellation terms</th><th>Where it is set</th></tr>`+[
+      ['TUI (Benelux + DE)','Free cancellation <b>7 days</b> before arrival, all season. Release 14 days (through 31 Oct), 7 days (from 01 Nov). Released allotment returns to the hotel.','TUI 2027 proposal v6 · workbook TUI tab'],
+      ['Ion Tours — FIT','Free cancellation <b>2 days</b> (Low / Middle), <b>5 days</b> (High) before arrival. After that: 1 night charge per booking.','Workbook ION TOURS FIT tab'],
+      ['Ion Tours — Groups','Contract draft Art. 6: allotment rooms released free of charge within 30 days of arrival; cancellations after release: <b>1 night per room</b>. <i>Note: the older workbook shows a % penalty scale instead — to be aligned.</i>','Ion 2027 contract draft'],
+      ['Trip.com B2V','<b>Non-refundable</b> — guests cannot cancel once booked.','Workbook TRIP.COM B2V tab'],
+      ['Investors','Free cancellation up to <b>48 hours</b> before arrival. Late cancellation / no-show: 1 night at the exclusive rate, deducted from the 15-night allowance.','Investors exclusive rates doc']
+      ].map(r=>`<tr><td class="roomcell">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join(''));
+  }
+  $('cxl-tables').innerHTML=out;
+}
 function showTab(t){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   $('p-'+t).classList.add('on');
@@ -964,7 +1011,7 @@ function showTab(t){
 }
 function renderAll(){
   $('m-singred').textContent=V('in-singred');
-  renderDash(); renderBase(); renderYield(); renderTUI(); renderIonF(); renderIonG(); renderTrip(); renderInv(); renderAn(); drawAnChart();
+  renderDash(); renderBase(); renderCxl(); renderYield(); renderTUI(); renderIonF(); renderIonG(); renderTrip(); renderInv(); renderAn(); drawAnChart();
 }
 document.querySelectorAll('input[type=number]').forEach(i=>i.addEventListener('input',renderAll));
 showTab('dash');
